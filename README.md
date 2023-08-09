@@ -11,3 +11,8 @@ Handling Personally Identifiable Information (PII) in backend systems requires a
 ## What's inside
 
 [0x00](./0x00-personal_data): Personal Data
+
+[0x01](./0x01-Basic_authentication): Basic HTTP Authentication
+
+[0x02](./0x02-Session_authentication): Session Based HTTP Authentication
+
