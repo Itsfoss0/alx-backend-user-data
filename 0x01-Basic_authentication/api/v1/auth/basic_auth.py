@@ -7,6 +7,7 @@ for HTTP authorization
 """
 
 from .auth import Auth
+from base64 import b64decode
 import re
 
 
@@ -47,3 +48,21 @@ class BasicAuth(Auth):
         if not BasicAuth.is_valid_basic_header(authorization_header):
             return None
         return authorization_header.split(" ")[1]
+
+    def decode_base64_authorization_header(self,
+                                           base64_authorization_header:
+                                           str) -> str:
+        """
+        decode the base64 string after extracting it
+        Args:
+            base64_authorization_header(str): string to decode
+        Returns:
+            returns a utf-8 string
+        """
+        if not base64_authorization_header or not isinstance(
+                    base64_authorization_header, str):
+            return None
+        try:
+            return (b64decode(base64_authorization_header).decode('utf-8'))
+        except Exception as e:
+            return None
