@@ -9,6 +9,8 @@ for HTTP authorization
 from .auth import Auth
 from base64 import b64decode
 import re
+from typing import TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -85,3 +87,24 @@ class BasicAuth(Auth):
         if ":" in decoded_header:
             return tuple(decoded_header.split(":"))
         return (None, None)
+
+    def user_object_from_credentials(
+        self,
+        user_email: str,
+            user_pwd: str) -> TypeVar('User'):
+        """
+        get the user object from the credentials
+        Args:
+            user_email (str): the username
+            user_pwd  (str): the password
+        Returns:
+            returns a object  of the User class
+        """
+        if not user_email or not user_pwd or not isinstance(user_email, str)\
+                or not isinstance(user_pwd, str):
+            return None
+        if not User.search(email=user_email):
+            return None
+        if not User.is_valid_password(user_pwd):
+            return None
+        return User(email=user_email, _password=user_pwd)
