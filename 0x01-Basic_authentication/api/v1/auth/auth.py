@@ -30,7 +30,17 @@ class Auth:
             auth.require_auth("/api/private", []) # True
             auth.require_auth("/api/public", []) # False
         """
-        return False
+        if path is None:
+            return True
+
+        if excluded_paths is None or not excluded_paths:
+            return True
+
+        slash_path = path if path.endswith('/') else path + '/'
+        excluded_paths_with_slash = [p if p.endswith('/')
+                                     else p + '/' for p in excluded_paths]
+
+        return slash_path not in excluded_paths_with_slash
 
     def authorization_header(self, request=None) -> str:
         """
