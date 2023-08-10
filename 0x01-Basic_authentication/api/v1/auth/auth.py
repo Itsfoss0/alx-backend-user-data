@@ -51,6 +51,8 @@ class Auth:
             returns the Authorization header from
             a http request
         """
+        if request and request.headers.get("Authorization"):
+            return request.headers.get("Authorization")
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
