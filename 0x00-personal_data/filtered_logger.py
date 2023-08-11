@@ -6,6 +6,7 @@ to filter  personal data from logs
 and obfuscate it for log processing
 """
 
+import logging
 import re
 from typing import List
 
@@ -30,11 +31,41 @@ def filter_datum(fields: List[str], redaction: str,
     Exceptions:
         raises TypeError if the args are not of the valid type
     """
-    if not isinstance(fields, list) or not isinstance(redaction, str)\
-            or not isinstance(message, str) or not isinstance(separator, str):
-        raise TypeError('Check your arguments')
+    # if not isinstance(fields, list) or not isinstance(redaction, str)\
+    #     or not isinstance(message, str) or not isinstance(separator, str):
+    #     raise TypeError('Check your arguments')
 
     for field in fields:
         message = re.sub(f'{field}=.*?{separator}',
                      f'{field}={redaction}{separator}', message)  # noqa E128
     return message
+
+
+class RedactingFormatter(logging.Formatter):
+    """ Redacting Formatter class
+        """
+
+    REDACTION = "***"
+    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+    SEPARATOR = ";"
+
+    def __init__(self, fields: List[str]):
+        """
+        The constructor for the RedactingFormatter
+        Args:
+            fields (list): A list of fields to redact
+        """
+        super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.fields = fields
+
+    def format(self, record: logging.LogRecord) -> str:
+        """
+        Format a log message by removing the PIII
+        Args:
+            record (logRecord): The log record to format
+        Returns:
+            returns a string
+        """
+        record.msg = filter_datum(self.fields, RedactingFormatter.REDACTION,
+                        record.getMessage(), RedactingFormatter.SEPARATOR)  # noqa E128
+        return super(RedactingFormatter, self).format(record)
