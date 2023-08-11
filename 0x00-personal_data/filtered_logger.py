@@ -9,9 +9,9 @@ and obfuscate it for log processing
 PII_FIELDS = ("name", "email", "ssn", "password", "phone")
 
 
-import logging
-import re
-from typing import List
+import logging  # noqa E402
+import re  # noqa E402
+from typing import List  # noqa E402
 
 
 def filter_datum(fields: List[str], redaction: str,
