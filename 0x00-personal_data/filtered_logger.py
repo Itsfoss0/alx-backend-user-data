@@ -6,7 +6,7 @@ to filter  personal data from logs
 and obfuscate it for log processing
 """
 
-from re import sub
+import re
 from typing import List
 
 
@@ -35,6 +35,6 @@ def filter_datum(fields: List[str], redaction: str,
         raise TypeError('Check your arguments')
 
     for field in fields:
-        message = sub(f'{field}=.*?{separator}',
+        message = re.sub(f'{field}=.*?{separator}',
                      f'{field}={redaction}{separator}', message)  # noqa E128
     return message
