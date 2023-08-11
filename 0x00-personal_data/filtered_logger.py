@@ -6,6 +6,9 @@ to filter  personal data from logs
 and obfuscate it for log processing
 """
 
+PII_FIELDS = ("name", "email", "ssn", "password", "phone")
+
+
 import logging
 import re
 from typing import List
@@ -69,3 +72,18 @@ class RedactingFormatter(logging.Formatter):
         record.msg = filter_datum(self.fields, RedactingFormatter.REDACTION,
                         record.getMessage(), RedactingFormatter.SEPARATOR)  # noqa E128
         return super(RedactingFormatter, self).format(record)
+
+
+def get_logger() -> logging.Logger:
+    """
+    This function returns a Logger object
+    Args:
+        doesn't take any arguments
+    Returns:
+        returns a Logger
+    """
+    holbie_logger = logging.getLogger("user_data")
+    holbie_logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler()
+    handler.setFormatter(RedactingFormatter(PII_FIELDS))
+    holbie_logger.propagate = False
