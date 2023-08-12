@@ -4,7 +4,7 @@
 hash passwords using bcrypt
 """
 
-import bcyrpt
+from bcrypt import hashpw, gensalt
 
 
 def hash_password(password: str) -> bytes:
@@ -23,6 +23,4 @@ def hash_password(password: str) -> bytes:
         hash_password(1234)
         # TypeError 1234 is not of type str
     """
-    encoded_password = password.encode()
-    salt = bcyrpt.gensalt()
-    return hashpw(encoded_password, salt)
+    return hashpw(password.encode(), gensalt())
