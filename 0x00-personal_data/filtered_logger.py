@@ -120,9 +120,12 @@ def main():
     connection = get_db()
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM users")
-    results = cursor.fetchall()
-    for entry in results:
-        logger.info(results)
+    fields = [entry[0] for entry in cursor.description]
+    # return cursor.fetchall()
+    for row in cursor:
+        record_wit_fields = "".join(f"{i} {str(j)}" for i, j in zip(row, fields)).strip()
+        logger.info(record_wit_fields)
+    # return fields
 
 
 if __name__ == "__main__":
