@@ -24,9 +24,9 @@ def hash_password(pwd: str) -> bytes:
         # TypeError 1234 is not of type str
     """
     try:
-        if isinstance(pwd, str):
-            return hashpw(pwd.encode(), gensalt())
+        if isinstance(password, str):
+            return hashpw(password.encode(), gensalt())
 
-        raise TypeError(f"{pwd} is not of type str")
+        raise TypeError(f"{password} is not of type str")
     except Exception as e:
         return e.__context__
