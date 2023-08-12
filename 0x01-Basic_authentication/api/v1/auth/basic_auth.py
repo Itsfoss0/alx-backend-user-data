@@ -84,8 +84,11 @@ class BasicAuth(Auth):
         """
         if not decoded_header or not isinstance(decoded_header, str):
             return (None, None)
-        if ":" in decoded_header:
-            return tuple(decoded_header.split(":"))
+        last_colon_index = decoded_header.rfind(":")
+        if last_colon_index != -1:
+            username = decoded_header[:last_colon_index]
+            password = decoded_header[last_colon_index + 1:]
+            return (username, password)
         return (None, None)
 
     def user_object_from_credentials(
