@@ -4,7 +4,7 @@
 hash passwords using bcrypt
 """
 
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, gensalt, checkpw
 
 
 def hash_password(password: str) -> bytes:
@@ -24,3 +24,15 @@ def hash_password(password: str) -> bytes:
         # TypeError 1234 is not of type str
     """
     return hashpw(password.encode(), gensalt())
+
+
+def is_valid(stored_pwd: bytes, input_pwd: str) -> bool:
+    """
+    validate user  passwords
+    Args:
+        input_pwd (str): the entered password
+        stored_pwd (str): password stored in the db
+    Returns:
+        return a bool
+    """
+    return checkpw(input_pwd.encode(), stored_pwd)
