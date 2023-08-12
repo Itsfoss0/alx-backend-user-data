@@ -12,6 +12,16 @@ PII_FIELDS = ("name", "email", "ssn", "password", "phone")
 import logging  # noqa E402
 import re  # noqa E402
 from typing import List  # noqa E402
+import mysql.connector as connector  # noqa E402
+from mysql.connector.connection import MySQLConnection  # noqa E402
+from os import getenv  # noqa E402
+
+DB_CREDS_STUB = {
+    "username": getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+    "password": getenv("PERSONAL_DATA_DB_PASSWORD", "root"),
+    "database": getenv("PERSONAL_DATA_DB_NAME", "my_db"),
+    "host": getenv("PERSONAL_DATA_DB_HOST", "localhost")
+}
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -87,3 +97,15 @@ def get_logger() -> logging.Logger:
     handler = logging.StreamHandler()
     handler.setFormatter(RedactingFormatter(PII_FIELDS))
     holbie_logger.propagate = False
+
+
+def get_db() -> MySQLConnection:
+    """
+    connect to a database securely using
+    mysql.connector
+    ------------------------------------
+    Example:
+        db_obj = get_db()
+        db_objet.cursor().execute(query)
+    """
+    return connector.Connect(**DB_CREDS_STUB)
