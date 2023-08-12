@@ -89,6 +89,7 @@ def get_logger() -> logging.Logger:
     handler = logging.StreamHandler()
     handler.setFormatter(RedactingFormatter(PII_FIELDS))
     holbie_logger.propagate = False
+    return holbie_logger
 
 
 def get_db() -> MySQLConnection:
@@ -107,3 +108,22 @@ def get_db() -> MySQLConnection:
         "host": environ.get("PERSONAL_DATA_DB_HOST", "localhost")
     }
     return MySQLConnection(**DB_CREDS_STUB)
+
+
+def main():
+    """
+    Entry point for the script
+    Fetches users from the database and logs
+    the records with PII stripped
+    """
+    logger = get_logger()
+    connection = get_db()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users")
+    results = cursor.fetchall()
+    for entry in results:
+        logger.info(results)
+
+
+if __name__ == "__main__":
+    print(main())
