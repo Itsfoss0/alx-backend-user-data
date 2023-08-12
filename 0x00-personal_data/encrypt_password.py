@@ -7,7 +7,7 @@ hash passwords using bcrypt
 from bcrypt import hashpw, gensalt
 
 
-def hash_password(pwd: str) -> bytes:
+def hash_password(password: str) -> bytes:
     """
     Hash a password
     Args:
@@ -23,5 +23,5 @@ def hash_password(pwd: str) -> bytes:
         hash_password(1234)
         # TypeError 1234 is not of type str
     """
-    return hashpw(password, gensalt())
+    return hashpw(password.encode(), gensalt())
 
