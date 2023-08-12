@@ -13,14 +13,7 @@ import logging  # noqa E402
 import re  # noqa E402
 from typing import List  # noqa E402
 from mysql.connector.connection import MySQLConnection  # noqa E402
-from os import getenv  # noqa E402
-
-DB_CREDS_STUB = {
-    "username": getenv("PERSONAL_DATA_DB_USERNAME", "root"),
-    "password": getenv("PERSONAL_DATA_DB_PASSWORD", "root"),
-    "database": getenv("PERSONAL_DATA_DB_NAME", "my_db"),
-    "host": getenv("PERSONAL_DATA_DB_HOST", "localhost")
-}
+from os import environ  # noqa E402
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -107,4 +100,10 @@ def get_db() -> MySQLConnection:
         db_obj = get_db()
         db_objet.cursor().execute(query)
     """
+    DB_CREDS_STUB = {
+        "username": environ.get("PERSONAL_DATA_DB_USERNAME", "root"),
+        "password": environ.get("PERSONAL_DATA_DB_PASSWORD", "root"),
+        "database": environ.get("PERSONAL_DATA_DB_NAME", "my_db"),
+        "host": environ.get("PERSONAL_DATA_DB_HOST", "localhost")
+    }
     return MySQLConnection(**DB_CREDS_STUB)
