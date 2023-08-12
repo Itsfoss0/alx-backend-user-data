@@ -25,7 +25,7 @@ def hash_password(pwd: str) -> bytes:
     """
     try:
         if isinstance(pwd, str):
-            return hashpw(pwd.encode("utf-8"), gensalt())
+            return hashpw(pwd.encode(), gensalt())
 
         raise TypeError(f"{pwd} is not of type str")
     except Exception as e:
