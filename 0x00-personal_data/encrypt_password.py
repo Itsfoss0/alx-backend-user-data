@@ -23,5 +23,4 @@ def hash_password(password: str) -> bytes:
         hash_password(1234)
         # TypeError 1234 is not of type str
     """
-    return hashpw(password.encode(), gensalt())
-
+    return hashpw(password.encode("utf-8"), gensalt())
