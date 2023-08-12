@@ -106,9 +106,10 @@ class BasicAuth(Auth):
         if not User.search({"email": user_email}):
             return None
         users = User.search({"email": user_email})
-        for user in users:
-            if user.is_valid_password(user_pwd):
-                return user
+        if len(users) >= 1:
+            for user in users:
+                if user.is_valid_password(user_pwd):
+                    return user
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
