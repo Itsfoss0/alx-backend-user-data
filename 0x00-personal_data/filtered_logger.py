@@ -12,7 +12,6 @@ PII_FIELDS = ("name", "email", "ssn", "password", "phone")
 import logging  # noqa E402
 import re  # noqa E402
 from typing import List  # noqa E402
-import mysql.connector as connector  # noqa E402
 from mysql.connector.connection import MySQLConnection  # noqa E402
 from os import getenv  # noqa E402
 
@@ -108,4 +107,4 @@ def get_db() -> MySQLConnection:
         db_obj = get_db()
         db_objet.cursor().execute(query)
     """
-    return connector.Connect(**DB_CREDS_STUB)
+    return MySQLConnection(**DB_CREDS_STUB)
