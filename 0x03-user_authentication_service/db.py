@@ -5,8 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
-from user import User
-from user import Base
+from user import (User, Base)
+
 
 class DB:
     """DB class
@@ -40,7 +40,7 @@ class DB:
         """
         # session = Session(bind=self._engine)
         user_creds = {
-            "email": email, 
+            "email": email,
             "hashed_password": hashed_pwd
         }
         user = User(**user_creds)
