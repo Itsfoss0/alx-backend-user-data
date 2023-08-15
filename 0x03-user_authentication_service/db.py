@@ -31,7 +31,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_pwd: str) -> User:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """"
         Add a user to the session for persistene
         Args:
@@ -41,11 +41,12 @@ class DB:
             returns the user object
         """
         # session = Session(bind=self._engine)
-        user_creds = {
-            "email": email,
-            "hashed_password": hashed_pwd
-        }
-        user = User(**user_creds)
+        # user_creds = {
+        #     "email": email,
+        #     "hashed_password": hashed_pwd
+        # }
+        # user = User(**user_creds)
+        user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
         return user
