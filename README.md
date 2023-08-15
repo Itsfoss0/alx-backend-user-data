@@ -16,3 +16,5 @@ Handling Personally Identifiable Information (PII) in backend systems requires a
 
 [0x02](./0x02-Session_authentication): Session Based HTTP Authentication
 
+[0x03](./0x03-user_authentication_service): Authentication Service
+
