@@ -65,10 +65,9 @@ class DB:
             Raises NoResultFound if no result is found
             InvalidRequestError otherwise
         """
-        if not filters:
-            raise InvalidRequestError
-
-        user = self._session.query(User).filter_by(**filters).first()
-        if not user:
+        if filters:
+            user = self._session.query(User).filter_by(**filters).first()
+            if user:
+                return user
             raise NoResultFound
-        return user
+        raise InvalidRequestError
