@@ -4,7 +4,7 @@
 Entry point for a simple flask application
 """
 
-from flask import (Flask, jsonify,
+from flask import (Flask, jsonify, url_for,
                    request, make_response, abort)
 from auth import Auth
 
@@ -55,6 +55,19 @@ def sessions():
         abort(401)
     except Exception:
         abort(401)
+
+
+@app.route("/sessions", strict_slashes=False, methods=["DELETE"])
+def logout():
+    """
+    Logout the currently logged in user
+    """
+    session_id = request.cookies.get("session_id")
+    current_user = AUTH.get_user_from_session_id(session_id)
+    if current_user:
+        AUTH.destroy_session(current_user.id)
+        return url_for("index")
+    abort(403)
 
 
 if __name__ == "__main__":
