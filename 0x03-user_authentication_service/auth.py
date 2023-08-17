@@ -78,3 +78,27 @@ class Auth:
             return checkpw(password.encode(), login_user.hashed_password)
         except NoResultFound:
             return False
+
+    def create_session(self, email):
+        """
+        Create a user session
+        Args:
+            email (str): user's email
+        Returns:
+            returns a string (session id)
+        _________________________________
+        Example Usage:
+            from auth import Auth
+            auth = Auth()
+
+            email = "john@doe.net"
+            auth.create_session(email)
+            # 5a006849-343e-4a48-ba4e-bbd523fcca58
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+            session_id = _generate_uuid()
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
+        except NoResultFound:
+            return None
