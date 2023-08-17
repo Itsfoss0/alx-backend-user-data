@@ -6,6 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import (User, Base)
 
@@ -50,3 +52,23 @@ class DB:
         self._session.add(user)
         self._session.commit()
         return user
+
+    def find_user_by(self, **filters: dict) -> User:
+        """
+        Query for a user, filter the response and return
+        The first object
+        Args:
+            filters (dict): filters to use when filtering
+        Returns:
+            returns an object of the User class
+        Raises:
+            Raises NoResultFound if no result is found
+            InvalidRequestError otherwise
+        """
+        try:
+            user = self._session.query(User).filter_by(**filters).first()
+            if user:
+                return user
+            raise NoResultFound('No such user in the system')
+        except Exception:
+            raise InvalidRequestError('An error occured')
