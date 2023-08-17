@@ -71,3 +71,24 @@ class DB:
                 return user
             raise NoResultFound
         raise InvalidRequestError
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        Update a user
+        Args:
+            user_id (int): The user to update
+            kwargs (dict): New user properties
+        Returns:
+            Returns None (expclicity)
+        """
+        search_params = {
+            "id": user_id
+        }
+        user_to_update = self.find_user_by(**search_params)
+        for key, value in kwargs.items():
+            if not hasattr(user_to_update, key):
+                raise ValueError
+            setattr(user_to_update, key, value)
+
+        self._session.commit()
+        return
