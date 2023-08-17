@@ -4,7 +4,7 @@
 Entry point for a simple flask application
 """
 
-from flask import (Flask, jsonify, url_for,
+from flask import (Flask, jsonify, redirect,
                    request, make_response, abort)
 from auth import Auth
 
@@ -66,7 +66,7 @@ def logout():
     current_user = AUTH.get_user_from_session_id(session_id)
     if current_user:
         AUTH.destroy_session(current_user.id)
-        return url_for("index")
+        return redirect('/')
     abort(403)
 
 
