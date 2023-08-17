@@ -53,7 +53,7 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **filters: dict) -> User:
+    def find_user_by(self, **filters) -> User:
         """
         Query for a user, filter the response and return
         The first object
