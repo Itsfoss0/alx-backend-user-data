@@ -5,7 +5,7 @@ Authentication module
 for ad hoc auth functionalities
 """
 
-from bcrypt import (gensalt, hashpw)
+from bcrypt import (gensalt, hashpw, checkpw)
 from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
@@ -53,3 +53,16 @@ class Auth:
             # so we create a new one
             hashed_password = _hash_password(password)
             return self._db.add_user(email, hashed_password)
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """
+        validate user credentials agains those in the DB
+        Args:
+            email (str):  login email
+            passowrd (str): login password
+        """
+        try:
+            login_user = self._db.find_user_by(email=email)
+            return checkpw(password.encode(), login_user.hashed_password)
+        except NoResultFound:
+            return False
