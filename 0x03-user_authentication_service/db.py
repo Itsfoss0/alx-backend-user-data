@@ -69,6 +69,6 @@ class DB:
             raise InvalidRequestError('No filters passed')
 
         user = self._session.query(User).filter_by(**filters).first()
-        if user:
-            return user
-        raise NoResultFound('No such User in the system')
+        if not user:
+            raise NoResultFound('No such User in the system')
+        return user
