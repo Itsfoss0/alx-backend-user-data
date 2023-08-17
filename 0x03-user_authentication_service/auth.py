@@ -7,6 +7,7 @@ for ad hoc auth functionalities
 
 from bcrypt import (gensalt, hashpw, checkpw)
 from sqlalchemy.orm.exc import NoResultFound
+from uuid import uuid4
 
 from db import DB
 from user import User
@@ -66,3 +67,14 @@ class Auth:
             return checkpw(password.encode(), login_user.hashed_password)
         except NoResultFound:
             return False
+
+    def _generate_uuid(self) -> str:
+        """
+        Genereate Universally Unique IDs
+        to represent sessions
+        Usage:
+            auth = Auth()
+            auth._generate_uuid()
+            # 2a633dcf-a832-4ff9-87b3-75666c4744a5
+        """
+        return str(uuid4())
