@@ -52,4 +52,4 @@ class Auth:
             # no user with such email
             # so we create a new one
             hashed_password = _hash_password(password)
-            return self._db.add_user(email, password)
+            return self._db.add_user(email, hashed_password)
