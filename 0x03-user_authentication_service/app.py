@@ -92,9 +92,13 @@ def get_reset_password_token():
     if email:
         try:
             r_token = AUTH.get_reset_password_token(email)
-            return jsonify({"email": f"{email}", "reset_token": f"{r_token}"})
+            return jsonify({
+                "email": f"{email}",
+                "reset_token": f"{r_token}"}
+            ), 200
         except ValueError:
             abort(403)
+    abort(403)
 
 
 if __name__ == "__main__":
